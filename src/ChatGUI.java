@@ -8,9 +8,12 @@ public class ChatGUI extends JFrame {
     static JTextField inputField;
     static JButton sendButton;
     static JLabel idLabel;
+    static JLabel connectionLabel;
     static JTextField infoInputField;
     static String targetID; // Variable zum Speichern
     static String ownID;
+    JPanel combinedInputPanel = new JPanel(new GridLayout(1, 2));
+    private JTextField connectedIdField;
     
 
     public ChatGUI() {
@@ -48,27 +51,53 @@ public class ChatGUI extends JFrame {
         idLabel.setOpaque(true);
         idLabel.setBackground(Color.LIGHT_GRAY);
 
+        // Linker Teil: Name + Suchen
+        JPanel namePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel nameLabel = new JLabel("ID:");
+        infoInputField = new JTextField(12);
+        JButton searchButton = new JButton("Verbinden");
+        searchButton.addActionListener(e -> {
+            targetID = infoInputField.getText().trim();
+            System.out.println("targetId: " + targetID);
+        });
+        namePanel.add(nameLabel);
+        namePanel.add(infoInputField);
+        namePanel.add(searchButton);
+
+        /* 
+        //  Connectetde ID anzeigen
+        connectedID= "...";
+        connectionLabel = new JLabel(connectedID, JLabel.CENTER);
+        connectionLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        connectionLabel.setOpaque(true);
+        connectionLabel.setBackground(Color.LIGHT_GRAY);
+        */
+
+        
         // Zusätzlicher Eingabebereich (z. B. für Namen)
         JPanel extraInputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel infoLabel = new JLabel("Verbinden mit:");
-        infoInputField = new JTextField(20);
 
-        // Suchen-Button
-        JButton searchButton = new JButton("verbinden");
-        searchButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                targetID = infoInputField.getText().trim();
-                System.out.println("Ziel ID: " + targetID);
-                // Du kannst hier z. B. auch weitere Aktionen starten
-            }
-        });
 
-        extraInputPanel.add(infoLabel);
+        // Rechter Teil: Verbundene ID
+        JPanel connectedPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel connectedLabel = new JLabel("Verbundene ID:");
+        connectedIdField = new JTextField("XXX", 12);
+        connectedIdField.setEditable(false);
+        connectedPanel.add(connectedLabel);
+        connectedPanel.add(connectedIdField);
+
+
+        //combinedInputPanel.add(namePanel);
+        combinedInputPanel.add(connectedPanel);
+        infoPanel.add(idLabel);
+        infoPanel.add(combinedInputPanel);
         extraInputPanel.add(infoInputField);
         extraInputPanel.add(searchButton);
 
+        
         infoPanel.add(idLabel);
         infoPanel.add(extraInputPanel);
+        //infoPanel.add(connectionLabel);
 
         // Alles ins Hauptfenster
         getContentPane().setLayout(new BorderLayout());
