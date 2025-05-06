@@ -1,0 +1,103 @@
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
+
+###ZUSATZ
+# === IntelliJ IDEA ===
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Arbeitsbereichsdateien (z.B. Run-Konfigurationen)
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/dictionaries
+.idea/shelf/
+
+# === Gradle ===
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Wrapper-Ausführungsdateien
+gradle-app.setting
+gradlew
+gradlew.bat
+
+# === Eclipse (falls Projekt in mehreren IDEs geöffnet wird) ===
+*.launch
+.settings/
+.project
+.classpath
+
+# === Betriebssystem-Spezifisches ===
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.nfs*
+
+# === Logs, temporäre Dateien ===
+*.log
+*.tmp
+*.swp
+
+# === Sonstiges (z. B. SQLite, falls du DB-Dateien erzeugst) ===
+*.db
+*.db-journal
+
+# === Testausgaben ===
+out/
+test-output/
+
+# === VSCode (falls du es parallel nutzt) ===
+.vscode/
