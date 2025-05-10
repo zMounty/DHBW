@@ -1,21 +1,19 @@
 package chat.client;
 
-import chat.network.ConnectionState;
+import GUI.App;
 import chat.network.packets.login.ClientboundLoginSuccessPacket;
 import chat.network.packets.login.IPacketHandlerLoginClient;
 
-public record PacketHandlerLoginClient(ChatClient chatClient) implements IPacketHandlerLoginClient {
+public record PacketHandlerLoginClient() implements IPacketHandlerLoginClient {
 
     @Override
     public void handleLoginSuccess(ClientboundLoginSuccessPacket packet) {
-        System.out.println("Login successful");
-        chatClient.connection().setConnectionState(ConnectionState.CHAT);
-        chatClient.connection().setPacketHandler(new PacketHandlerChatClient(chatClient));
+        App.getApp().acceptPeer(packet.peer());
     }
 
     @Override
     public void onDisconnect() {
-        //TODO
+        App.getApp().onDisconnect();
     }
 
 }

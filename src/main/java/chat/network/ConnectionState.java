@@ -98,7 +98,7 @@ public enum ConnectionState {
             if (state.clientBoundMap != null) {
                 for (Class<? extends Packet> packetClass : state.clientBoundMap) {
                     if (STATES_BY_CLASS.containsKey(packetClass) && STATES_BY_CLASS.get(packetClass) != state) {
-                        System.out.printf("error.network.connectionState.packet %s%n", STATES_BY_CLASS.get(packetClass));
+                        System.out.printf("Packet fehler %s%n", STATES_BY_CLASS.get(packetClass));
                     } else {
                         try {
                             packetClass.getConstructor().newInstance();
@@ -113,7 +113,7 @@ public enum ConnectionState {
             if (state.serverBoundMap != null) {
                 for (Class<? extends Packet> packetClass : state.serverBoundMap) {
                     if (STATES_BY_CLASS.containsKey(packetClass) && STATES_BY_CLASS.get(packetClass) != state) {
-                        System.out.println("error.network.connectionState.packet");
+                        System.out.println("Packet fehler");
                     } else {
                         try {
                             packetClass.getConstructor().newInstance();

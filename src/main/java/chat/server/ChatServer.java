@@ -52,13 +52,11 @@ public class ChatServer {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println("Starte chat.server.ChatServer...");
-
+        System.out.println("Starte ChatServer...");
         ChatDatabase chatDatabase = new ChatDatabase();
         chatDatabase.connect("jdbc:mariadb://198.186.130.154:1521", "chatsystem", "chatsystem", "!*WA!Cbk8JFc8MICR7X6");
         chatDatabase.createTableUsers();
         chatDatabase.createTableMessages();
-
         ChatServer chatServer = new ChatServer(chatDatabase);
         chatServer.addEndpoint(PORT);
     }
@@ -83,36 +81,4 @@ public class ChatServer {
         return peers;
     }
 
-    /*private static final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-
-    @Override
-    public void handlerAdded(ChannelHandlerContext context) {
-        Channel incoming = context.channel();
-        channels.writeAndFlush("[SERVER] - " + incoming.remoteAddress() + " hat den Chat betreten\n");
-        channels.add(incoming);
-    }
-
-    @Override
-    public void handlerRemoved(ChannelHandlerContext context) {
-        Channel incoming = context.channel();
-        channels.writeAndFlush("[SERVER] - " + incoming.remoteAddress() + " hat den Chat verlassen\n");
-        channels.remove(incoming);
-    }
-
-    @Override
-    protected void channelRead0(ChannelHandlerContext context, String message) {
-        Channel incoming = context.channel();
-        for (Channel channel : channels) {
-            if (channel != incoming) {
-                channel.writeAndFlush("[" + incoming.remoteAddress() + "] " + message + "\n");
-            } else {
-                channel.writeAndFlush("[Du] " + message + "\n");
-            }
-        }
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext context, Throwable cause) {
-        context.close();
-    }*/
 }

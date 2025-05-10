@@ -15,9 +15,7 @@ public record PacketHandlerChatServer(ChatServer chatServer, Connection connecti
     public void handleMessage(ServerboundMessagePacket packet) {
         String userId = connection.channel().attr(ChatServer.USER_ATTRIBUTE_KEY).get();
         String peerId = connection.channel().attr(ChatServer.PEER_ATTRIBUTE_KEY).get();
-        System.out.printf("user %s, peer %s, message %s%n", userId, peerId, packet.message());
         chatServer.chatDatabase().saveMessage(userId, peerId, packet.message());
-        System.out.printf("Nachricht für \"%s\" erhalten: \"%s\"%n", packet.userId(), packet.message());
 
         List<ChatMessage> chatMessages = chatServer.chatDatabase().fetchChatHistory(userId, peerId);
         Connection peerConnection = chatServer.peers().get(peerId);
@@ -33,6 +31,5 @@ public record PacketHandlerChatServer(ChatServer chatServer, Connection connecti
     public void onDisconnect() {
         String userId = connection.channel().attr(ChatServer.USER_ATTRIBUTE_KEY).get();
         chatServer().peers().remove(userId);
-        //TODO
     }
 }

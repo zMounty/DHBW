@@ -1,22 +1,21 @@
 package GUI;
 
+import chat.ChatMessage;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class ChatGUI extends JFrame {
-    static JTextArea chatArea;
-    static JTextField inputField;
-    static JButton sendButton;
-    static JLabel idLabel;
-    static JTextField infoInputField;
-    static String targetID; // Variable zum Speichern
-    static String ownID;
+public class ChatGUI extends JFrame { //VIEW
 
+    private JTextArea chatArea;
+    private JTextField messageInputField;
+    private JButton sendButton;
+    private JLabel idLabel;
+    private JTextField targetIDInputField;
+    private String targetID; // Variable zum Speichern
+    private String ownHardwareId;
 
     public ChatGUI() {
-
         setTitle("Chatprogramm");
         setSize(500, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -29,11 +28,11 @@ public class ChatGUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(chatArea);
 
         // Eingabefeld + Senden Button
-        inputField = new JTextField();
+        messageInputField = new JTextField();
         sendButton = new JButton("Senden");
 
         JPanel inputPanel = new JPanel(new BorderLayout());
-        inputPanel.add(inputField, BorderLayout.CENTER);
+        inputPanel.add(messageInputField, BorderLayout.CENTER);
         inputPanel.add(sendButton, BorderLayout.EAST);
 
         // Info-Bereich (oben)
@@ -42,10 +41,8 @@ public class ChatGUI extends JFrame {
         infoPanel.setPreferredSize(new Dimension(500, 100));
 
         // ID-Anzeige
-        ownID= HardwareIDGenerator.getHardwareID();
-        String shortID=ownID.substring(0,10);
-        System.out.println(shortID);
-        idLabel = new JLabel(shortID, JLabel.CENTER);
+        ownHardwareId = HardwareIDGenerator.getShortHardwareID();
+        idLabel = new JLabel(ownHardwareId, JLabel.CENTER);
         idLabel.setFont(new Font("Arial", Font.BOLD, 16));
         idLabel.setOpaque(true);
         idLabel.setBackground(Color.LIGHT_GRAY);
@@ -53,20 +50,14 @@ public class ChatGUI extends JFrame {
         // Zusätzlicher Eingabebereich (z. B. für Namen)
         JPanel extraInputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel infoLabel = new JLabel("Verbinden mit:");
-        infoInputField = new JTextField(20);
+        targetIDInputField = new JTextField(20);
 
         // Suchen-Button
-        JButton searchButton = new JButton("verbinden");
-        searchButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                targetID = infoInputField.getText().trim();
-                System.out.println("Ziel ID: " + targetID);
-                // Du kannst hier z. B. auch weitere Aktionen starten
-            }
-        });
+        JButton searchButton = new JButton("Verbinden");
+        searchButton.addActionListener((_) -> App.getApp().selectPeer(targetIDInputField.getText().trim()));
 
         extraInputPanel.add(infoLabel);
-        extraInputPanel.add(infoInputField);
+        extraInputPanel.add(targetIDInputField);
         extraInputPanel.add(searchButton);
 
         infoPanel.add(idLabel);
@@ -79,7 +70,23 @@ public class ChatGUI extends JFrame {
         getContentPane().add(inputPanel, BorderLayout.SOUTH);
 
         // Listener für Senden
-        sendButton.addActionListener(new SendMessageListener());
-        inputField.addActionListener(new SendMessageListener());
+        sendButton.addActionListener((_) -> App.getApp().sendMessage(messageInputField.getText().trim()));
+        messageInputField.addActionListener((_) -> App.getApp().sendMessage(messageInputField.getText().trim()));
+    }
+
+    public void resetMessageInputField() {
+        messageInputField.setText("");
+    }
+
+    public void setChatMessages(java.util.List<ChatMessage> messageHistory) {
+        String userId = App.getApp().userId();
+        StringBuilder chatAreaText = new StringBuilder();
+        for (ChatMessage chatMessage : messageHistory) {
+            chatAreaText.append(chatMessage.getSender().userId().equals(userId) ? "Du" : chatMessage.getSender().username());
+            chatAreaText.append(": ");
+            chatAreaText.append(chatMessage.getMessage());
+            chatAreaText.append("\n");
+        }
+        chatArea.setText(chatAreaText.toString());
     }
 }

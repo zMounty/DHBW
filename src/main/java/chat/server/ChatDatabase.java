@@ -66,13 +66,14 @@ public class ChatDatabase {
     }
 
     public User cachedUserById(String userId) {
-        System.out.println("searching");
-        System.out.println(userId);
         if (!userCache.containsKey(userId)) {
-            System.out.println("fetching");
-            System.out.println(userId);
-            System.out.println(fetchUserById(userId));
-            userCache.put(userId, fetchUserById(userId));
+            User user = fetchUserById(userId);
+            if(user != null) {
+                userCache.put(userId, user);
+                return user;
+            }else {
+                return new User(userId, userId);
+            }
         }
         return userCache.get(userId);
     }
@@ -134,7 +135,6 @@ public class ChatDatabase {
                 Timestamp timestamp = resultSet.getTimestamp("timestamp");
                 ChatMessage chatMessage = new ChatMessage(cachedUserById(messageSenderId), cachedUserById(messageReceiverId), message, timestamp);
                 chatHistory.add(chatMessage);
-                //chatHistory.add("[" + timestamp + "] " + sender + ": " + message);
             }
         }catch (SQLException e) {
             System.out.println("Fehler beim Aktualisieren des Chats: " + e.getMessage());

@@ -7,7 +7,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.net.SocketAddress;
 
-public class Connection extends SimpleChannelInboundHandler<Packet> {
+public class Connection extends SimpleChannelInboundHandler<Packet> { //MODEL
 
     public static final EventLoopGroup EVENT_LOOP_GROUP = new NioEventLoopGroup();
 
@@ -47,7 +47,6 @@ public class Connection extends SimpleChannelInboundHandler<Packet> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext context, Packet packet) {
-        System.out.println(connectionState().getId() + ": " + packet.getClass().getName() + ": " + packetHandler.getClass().getName());
         packet.processPacket(packetHandler);
     }
 
@@ -59,7 +58,6 @@ public class Connection extends SimpleChannelInboundHandler<Packet> {
     }
 
     public void sendPacket(Packet packet) {
-        System.out.println(this.channel);
         ConnectionState packetConnectionState = ConnectionState.getByPacket(packet);
         if(this.channel.eventLoop().inEventLoop()) {
             if(packetConnectionState != connectionState()) {
