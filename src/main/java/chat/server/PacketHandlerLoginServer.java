@@ -30,7 +30,7 @@ public record PacketHandlerLoginServer(ChatServer chatServer, Connection connect
         User peer = chatServer.chatDatabase().cachedUserById(packet.peer());
         System.out.println(packet.peer());
         System.out.println("peer messages: " + peer);
-        connection.sendPacket(new ClientboundLoginSuccessPacket());
+        connection.sendPacket(new ClientboundLoginSuccessPacket(peer));
         connection.sendPacket(new ClientboundMessageHistoryPacket(peer != null ? peer : new User(packet.peer(), "Unknown"), chatMessages));
         connection.setPacketHandler(new PacketHandlerChatServer(chatServer, connection));
     }

@@ -1,13 +1,13 @@
 package GUI;
 
-import java.net.InetAddress;
+import javax.swing.*;
 import java.net.NetworkInterface;
 import java.security.MessageDigest;
 import java.util.Enumeration;
 
 public class HardwareIDGenerator {
 
-    public static String getHardwareID() {
+    public static String getShortHardwareID() {
         try {
             Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
 
@@ -23,12 +23,14 @@ public class HardwareIDGenerator {
                     for (byte b : hash) {
                         sb.append(String.format("%02X", b));
                     }
-                    return sb.toString();
+                    return sb.toString().substring(0,10);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "UNKNOWN";
+        JOptionPane.showConfirmDialog(null, "Hardware ID not available");
+        System.exit(1);
+        return null;
     }
 }
